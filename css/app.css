@@ -4,7 +4,9 @@
 .banner{
     height: 200px;
 }
-
+.title{
+    color: lightskyblue;
+}
 .banner-small{
     height: 100px;
 }
@@ -13,7 +15,10 @@
     color:darkgray;
     float: left;
 }
-
+.footer{
+    font-size: 15px;
+    color: darkgray;
+}
 .center{
     text-align: center;
 }

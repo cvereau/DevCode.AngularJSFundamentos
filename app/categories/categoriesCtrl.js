@@ -5,20 +5,40 @@
    "use strict";
 
     angular.module("newsWikiApp")//camel case
-        .controller("CategoriesCtrl", CategoriesCtrl) //pascal case
+        .controller("CategoriesCtrl", ["categoriesService", CategoriesCtrl]) //pascal case
 
-    function CategoriesCtrl(){
+    function CategoriesCtrl(categoriesService){
         var me = this;
 
-        me.categories = ["Economia","Politica","Deportes","Moda","Mundo"];
+        categoriesRepository.getCategories(
+            {
+               categoriesService : categoriesService,
+               success: function (data) {
+                   me.categories = data;
+               }
+            }
+        );
 
         me.showCategories = false;
 
         me.toggleCategories = function () {
               me.showCategories = !me.showCategories;
         };
-
     }
 
+    // patron Revealing Module
+    var categoriesRepository = (function () {
+        var me = {};
+
+        me.getCategories = function (options) {
+            options.categoriesService.then(function (response) {
+                options.success(response.data);
+            });
+        };
+
+        return {
+            getCategories : me.getCategories
+        }
+    }());
 
 }());

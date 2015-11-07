@@ -1,0 +1,61 @@
+<div class="row center" ng-controller="CategoriesCtrl as vm">
+    <button ng-click="vm.toggleCategories()" class="btn btn-default"
+            style="margin-bottom: 10px">
+        {{vm.showCategories? "Ocultar" : "Mostrar"}}   Categorias
+    </button>
+    <br/>
+    <div ng-show="vm.showCategories" class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active"
+               ng-repeat="cate in vm.categories">
+            <input type="radio" name="options"
+                   id="{{cate}}" autocomplete="off" > {{cate}}
+        </label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="row">
+        <fieldset>
+            <legend class="titulo">Destacados</legend>
+        </fieldset>
+
+        <div class="row">
+            <div class="col-sm-6 col-md-4" ng-repeat="newsItem in vm.news | filter: {destacado: true} |orderBy: '-fechaPublicacion'">
+                <div class="thumbnail">
+                    <img ng-src="{{newsItem.banner}}" class="banner" >
+                    <div class="caption">
+                        <span class="fecha">{{newsItem.fechaPublicacion | date}}</span>
+                        <h3>{{newsItem.tituloNoticia}}</h3>
+                        <p>{{newsItem.descripcionNoticia.substring(0,200) + "..."}} </p>
+                        <p><a ui-sref="newsDetail({idNoticia: newsItem.idNoticia})" class="btn btn-primary"
+                              role="button">Leer mas</a>
+                            <a href="#" class="btn btn-default"
+                               role="button">Editar</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <fieldset>
+            <legend class="titulo">Ultimas noticias</legend>
+        </fieldset>
+        <div class="row">
+            <div class="col-sm-4 col-md-2" ng-repeat="newsItem in vm.news | filter:{destacado:false} | orderBy: '-fechaPublicacion'">
+                <div class="thumbnail">
+                    <img ng-src="{{newsItem.banner}}" class="banner-small" >
+                    <span class="fecha">{{newsItem.fechaPublicacion | date}}</span>
+                    <div class="caption">
+                        <h5>{{newsItem.tituloNoticia}}</h5>
+                        <p><a ui-sref="newsDetail({idNoticia: newsItem.idNoticia})" class="btn btn-primary btn-xs"
+                              role="button">Leer</a>
+                            <a href="#" class="btn btn-default btn-xs"
+                               role="button">Editar</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
