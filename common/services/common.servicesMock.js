@@ -27,7 +27,7 @@
                 "fechaPublicacion": new Date(),
                 "banner" : "http://cde.3.elcomercio.pe/ima/0/1/2/3/4/1234815/base_image.jpg",
                 "destacado": true,
-                "categoria": "Política",
+                "categoria": "Politica",
                 "tags": ["peru", "politica", "guerra"]
             },
             {
@@ -41,11 +41,11 @@
                 "fechaPublicacion": new Date(2015,0,1),
                 "banner" : "http://cde.3.elcomercio.pe/ima/0/1/2/3/5/1235147/base_image.jpg",
                 "destacado": true,
-                "categoria": "Política",
+                "categoria": "Politica",
                 "tags": ["alan garcia", "politica"]
             },
             {
-                "idNoticia": 6,
+                "idNoticia": 3,
                 "codigoNoticia": "TFH-1455",
                 "tituloNoticia": "Mestiza, la marca de Gamarra que compite en Brasil",
                 "descripcionNoticia": "Loryade laborum magni, officiis ratione reiciendis sunt aque Commodi doloribus error ex fuos est fuga illum iusto ne" +
@@ -53,11 +53,11 @@
                 "fechaPublicacion": new Date(2015,7,30),
                 "banner" : "http://cde.3.elcomercio.pe/ima/0/1/2/3/4/1234368.jpg",
                 "destacado": false,
-                "categoria": "Economía",
+                "categoria": "Economia",
                 "tags": ["mestiza", "gamarra"]
             },
             {
-                "idNoticia": 3,
+                "idNoticia": 4,
                 "codigoNoticia": "TFS-7890",
                 "tituloNoticia": "Esta semana continua el torneo Clausura",
                 "descripcionNoticia": "Loryade laborum magni, officiis ratione reiciendis sunt aque Commodi doloribus error ex fuos est fuga illum iusto ne" +
@@ -69,7 +69,7 @@
                 "tags": ["futbol", "clausura"]
             },
             {
-                "idNoticia": 4,
+                "idNoticia": 5,
                 "codigoNoticia": "JNQ-4564",
                 "tituloNoticia": "Avion ruso que cayo en Egipto se despedazo",
                 "descripcionNoticia": "Loryade laborum magni, officiis ratione reiciendis sunt aque Commodi doloribus error ex fuos est fuga illum iusto ne" +
@@ -81,7 +81,7 @@
                 "tags": ["avion", "accidente"]
             },
             {
-                "idNoticia": 5,
+                "idNoticia": 6,
                 "codigoNoticia": "NRR-6002",
                 "tituloNoticia": "Los primeros dias del LifWeek",
                 "descripcionNoticia": "Loryade laborum magni, officiis ratione reiciendis sunt aque Commodi doloribus error ex fuos est fuga illum iusto ne" +
@@ -109,6 +109,25 @@
                 for (var i = 0; i < news.length; i++) {
                     if (news[i].idNoticia == newsItemId){
                         newsItem = news[i];
+                        break;
+                    }
+                }
+            }
+
+            return [200, newsItem, {}];
+        });
+
+        $httpBackend.whenPOST(newsUrl).respond(function (method, url,data) {
+            var newsItem = angular.fromJson(data);
+
+            if(!newsItem.idNoticia){
+                newsItem.idNoticia = news[news.length - 1].idNoticia + 1;
+                news.push(newsItem);
+            }
+            else{
+                for (var i = 0; i < news.length; i++) {
+                    if(news[i].idNoticia == newsItem.idNoticia){
+                        news[i] = newsItem;
                         break;
                     }
                 }

@@ -7,7 +7,10 @@
     var app = angular.module("newsWikiApp",
                                     ["common.services",
                                      "common.servicesMock",
-                                     "ui.router"]);
+                                     "ui.router",
+                                     "ui.mask",
+                                     "ui.bootstrap",
+                                     "ngMessages"]);
 
     app.config(function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise("/");
@@ -22,6 +25,27 @@
                 templateUrl: "app/news/newsListView.html",
                 controller: "NewsCtrl as vm"
             })
+            .state("newsEdit",{
+                abstract: true,
+                url: "/noticias/edit/:idNoticia",
+                templateUrl: "app/news/newsEditView.html",
+                controller: "NewsEditCtrl as vm",
+                resolve:{
+                    newsResource: "newsResource",
+                    newsItem: function (newsResource, $stateParams) {
+                        var idNoticia = $stateParams.idNoticia;
+                        return newsResource.get({idNoticia: idNoticia}).$promise;
+                    }
+                }
+            })
+            .state("newsEdit.info",{
+                url: "/info",
+                templateUrl: "app/news/newsEditInfoView.html"
+            })
+            .state("newsEdit.tags",{
+                url: "/tags",
+                templateUrl: "app/news/newsEditTagsView.html"
+            })
             .state("newsDetail",{
                 url:"/noticias/:idNoticia",
                 templateUrl: "app/news/newsDetailView.html",
@@ -34,6 +58,17 @@
                     }
                 }
             })
+    });
+
+    app.config(function ($provide) {
+        $provide.decorator("$exceptionHandler",["$delegate", function ($delegate) {
+            return function(exception, cause){
+                exception.message = "Por favor contactese con Help Desk! " +
+                    "\n Message: " + exception.message;
+                $delegate(exception, cause);
+                toastr.error(exception.message);
+            }
+        }])
     });
 
 }());

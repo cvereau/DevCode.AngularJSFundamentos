@@ -19,7 +19,7 @@
             }
         );
 
-        me.showCategories = false;
+        me.showCategories = true;
 
         me.toggleCategories = function () {
               me.showCategories = !me.showCategories;
